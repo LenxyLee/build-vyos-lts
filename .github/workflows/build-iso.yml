@@ -33,7 +33,7 @@ jobs:
       run: |
         git clone -b sagitta --single-branch https://github.com/vyos/vyos-build.git
         cd vyos-build
-        docker run --rm --privileged -v $(pwd):/vyos -w /vyos vyos/vyos-build:sagitta  bash -c 'sudo make clean && sudo ./build-vyos-image iso --architecture amd64 --version "1.4.0-${{ steps.date.outputs.time }}"'
+        docker run --rm --privileged -v $(pwd):/vyos -w /vyos vyos/vyos-build:sagitta  bash -c 'sudo make clean && sudo ./build-vyos-image iso --build-type=release --architecture amd64 --version "1.4.0-${{ steps.date.outputs.time }}"'
 
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
