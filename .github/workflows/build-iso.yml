@@ -27,19 +27,19 @@ jobs:
 
     - name: Pull vyos-build docker image
       run: |
-        docker pull vyos/vyos-build:equuleus
+        docker pull vyos/vyos-build:sagitta
         
     - name: Build iso
       run: |
         git clone -b sagitta --single-branch https://github.com/vyos/vyos-build.git
         cd vyos-build
-        docker run --rm --privileged -v $(pwd):/vyos -w /vyos vyos/vyos-build:sagitta  bash -c './configure --architecture amd64 --build-type release --version "1.4.0-${{ steps.date.outputs.time }}" && sudo make iso'
+        docker run --rm --privileged -v $(pwd):/vyos -w /vyos vyos/vyos-build:sagitta  bash -c 'os=buster64 branch=sagitta make build && sudo make clean &&  ./build-vyos-image iso --architecture amd64 --version "1.4.0-${{ steps.date.outputs.time }}" && sudo make iso'
 
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
         file: vyos-build/build/vyos-1.4.0-${{ steps.date.outputs.time }}-amd64.iso
-        tag: equuleus-${{ steps.date.outputs.time  }}
+        tag: sagitta-${{ steps.date.outputs.time  }}
         overwrite: true
         file_glob: true
   
